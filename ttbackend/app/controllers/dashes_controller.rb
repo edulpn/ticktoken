@@ -1,4 +1,6 @@
 class DashesController < ApplicationController
+  # before_filter :signed_in_user
+
   # GET /dashes
   # GET /dashes.json
   def index
@@ -40,12 +42,21 @@ class DashesController < ApplicationController
   # POST /dashes
   # POST /dashes.json
   def create
-    @dash = Dash.new(params[:dash])
+    if (current_user.dashes.last.clock_in_out == 0)
+      dash_params = {dash_at: Time.now.strftime("%d-%m-%Y %H:%M:%S"), 
+        clock_in_out: 1}
+    else
+      dash_params = {dash_at: Time.now.strftime("%d-%m-%Y %H:%M:%S"), 
+        clock_in_out: 0}
+    end
+
+    @dash = current_user.dashes.build(dash_params)
 
     respond_to do |format|
       if @dash.save
-        format.html { redirect_to @dash, notice: 'Dash was successfully created.' }
+        format.html { redirect_to @dash, notice: 'Dash was successfully added.' }
         format.json { render json: @dash, status: :created, location: @dash }
+        flash[:success] = "Dash added!"
       else
         format.html { render action: "new" }
         format.json { render json: @dash.errors, status: :unprocessable_entity }

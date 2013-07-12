@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20130711140439) do
     t.datetime "updated_at",   :null => false
   end
 
+  add_index "dashes", ["user_id", "created_at"], :name => "index_dashes_on_user_id_and_created_at"
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"

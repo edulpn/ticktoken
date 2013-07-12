@@ -7,5 +7,6 @@ class CreateDashes < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :dashes, [:user_id, :created_at]
   end
 end

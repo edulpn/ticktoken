@@ -1,18 +1,32 @@
-<p>
-  <b>Name:</b>
-  <%= @user.name %>
-</p>
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <p>
+        <b>Name:</b>
+        <%= @user.name %>
+      </p>
+      <p>
+        <b>Email:</b>
+        <%= @user.email %>
+      </p>
+      <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-large btn-primary' %>
+    </section>
+  </aside>
+  <div class="span8">
+    <% if @user.dashes.any? %>
+      <h3>Dashes (<%= @user.dashes.count %>)</h3>
+      <ol class="microposts">
+        <%= render @dashes %>
+      </ol>
+      <%= will_paginate @dashes %>
+    <% else %>
+      <h3>Dashes (0)</h3>
+    <% end %>
+    <form accept-charset="UTF-8" action="/dashes" method="post">
+      <input class="btn btn-large btn-primary" name="commit" type="submit" value="Dash">
+    </form>
+  </div>
+</div>
 
-<p>
-  <b>Email:</b>
-  <%= @user.email %>
-</p>
-
-<p>
-  <b>Password digest:</b>
-  <%= @user.password_digest %>
-</p>
-
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%# = link_to 'Back', users_path %>

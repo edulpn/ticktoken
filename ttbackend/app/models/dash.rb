@@ -11,6 +11,11 @@
 #
 
 class Dash < ActiveRecord::Base
-  attr_accessible :clock_in_out, :dash_at, :user_id
+  attr_accessible :clock_in_out, :dash_at
   belongs_to :user
+
+  validates :dash_at, presence: true
+  validates :user_id, presence: true
+
+  default_scope order: 'dashes.dash_at DESC'
 end
