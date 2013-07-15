@@ -1,9 +1,10 @@
 Ttbackend::Application.routes.draw do
   root to: 'static_pages#home'
 
-  resources :users
-  resources :sessions, only: [:new, :create, :destroy]
-  resources :dashes, only: [:create, :destroy]
+  resources :users #do
+  resources :dashes, only: [:index, :create, :destroy]
+  #end
+  resources :sessions, only: [:index, :new, :create, :destroy]
 
   match '/help', to: 'static_pages#help'
   match '/about', to: 'static_pages#about'

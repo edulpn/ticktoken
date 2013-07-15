@@ -5,11 +5,10 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
+    if signed_in?
+      redirect_to current_user
+    else
+      redirect_to signin_path
     end
   end
 
