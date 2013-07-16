@@ -1,15 +1,12 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:edit, :update, :show]
   before_filter :correct_user, only: [:edit, :update]
+  before_filter :admin_user, only: :destroy
 
   # GET /users
   # GET /users.json
   def index
-    if signed_in?
-      redirect_to current_user
-    else
-      redirect_to signin_path
-    end
+    @users = User.paginate(page: params[:page])
   end
 
   # GET /users/1
@@ -20,7 +17,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @user }
+      #format.json { render json: @user }
     end
   end
 
@@ -47,7 +44,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         sign_in @user
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user }
         format.json { render json: @user, status: :created, location: @user }
         flash[:success] = "Welcome to the Ticktoken system!"
       else
@@ -62,7 +59,6 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
         flash[:success] = "Profile updated"
         sign_in @user
@@ -97,5 +93,9 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
+    end
+
+    def admin_user
+      redirect_to(root_path) unless current_user.admin?
     end
 end

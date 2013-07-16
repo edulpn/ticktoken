@@ -1,6 +1,7 @@
 module SessionsHelper
 	def sign_in(user)
 		cookies.permanent[:remember_token] = user.remember_token
+		user.update_attribute(:expires_at, 5.day.from_now.utc)
 		self.current_user = user
 	end
 

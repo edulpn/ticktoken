@@ -8,9 +8,8 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
     respond_to do |format|
       if user && user.authenticate(params[:session][:password])
-        # user.api_keys.create!
-        sign_in user # create cookie
-        format.json { render json: user, status: :created, location: user }
+        sign_in user # create a cookie
+        format.json { render json: user.active_model_serializer.new(user, {}) }
         format.html { redirect_back_or user }
       else
         flash.now[:error] = 'Invalid email/password combination.'
