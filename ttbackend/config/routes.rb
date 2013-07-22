@@ -13,6 +13,13 @@ Ttbackend::Application.routes.draw do
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
+  # api_version(:module => "V1", :path => {:value => "v1"}, 
+  #       :defaults => {:format => :json}, :default => true) do
+  #   match '/foos.(:format)' => 'foos#index', :via => :get
+  #   match '/foos_no_format' => 'foos#index', :via => :get
+  #   resources :bars
+  # end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

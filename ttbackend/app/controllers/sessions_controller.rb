@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         format.json { render json: user.active_model_serializer.new(user, {}) }
         format.html { redirect_back_or user }
       else
-        flash.now[:error] = 'Invalid email/password combination.'
+        #raise SessionsController::InvalidAuth
         render 'new'
       end
     end
@@ -23,4 +23,8 @@ class SessionsController < ApplicationController
     sign_out
     redirect_to root_path
   end
+
+  ## Exception Handling
+  #class InvalidAuth < StandardError
+  #end
 end

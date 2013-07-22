@@ -4,20 +4,18 @@ class UsersController < ApplicationController
   before_filter :admin_user, only: :destroy
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.paginate(page: params[:page])
   end
 
   # GET /users/1
-  # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    head :not_found unless @user
     @dashes = @user.dashes.paginate(page: params[:page])
 
     respond_to do |format|
       format.html # show.html.erb
-      #format.json { render json: @user }
     end
   end
 
@@ -77,7 +75,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url }
+      format.html { redirect_to users_path }
       format.json { head :no_content }
     end
   end
@@ -92,10 +90,12 @@ class UsersController < ApplicationController
 
     def correct_user
       @user = User.find(params[:id])
+      # raise User::NotAuthorized unless current_user?(@user)
       redirect_to(root_path) unless current_user?(@user)
     end
 
     def admin_user
+      # raise User::NotAuthorized unless current_user.admin?
       redirect_to(root_path) unless current_user.admin?
     end
 end
