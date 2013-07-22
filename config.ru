@@ -1,3 +1,3 @@
 WEBSITE_SUBDIR = 'ttbackend'
-require "#{WEBSITE_SUBDIR}/config/environment"
+require "#{WEBSITE_SUBDIR}/config/environments"
 run Ttbackend::Application
